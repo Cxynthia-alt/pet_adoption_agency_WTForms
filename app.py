@@ -28,17 +28,18 @@ def add_new_pet():
     """add a new pet"""
     form = AddPetForm()
     species_options = [(pet.id, pet.species) for pet in Pet.query.all()]
+    print(species_options[0])
     form.species.choices = species_options
     if form.validate_on_submit():
-        pet_name = form.pet_name.data
+        name = form.name.data
         species = form.species.data
         age = form.age.data
         photo_url = form.photo_url.data
         notes = form.notes.data
         available = form.available.data
-        new_pet = Pet(name=pet_name, species=species, photo_url=photo_url,
+        new_pet = Pet(name=name, species=species, photo_url=photo_url,
                       age=age, notes=notes, available=available)
-        db.session(new_pet)
+        db.session.add(new_pet)
         db.session.commit()
         return redirect('/')
     else:
@@ -56,6 +57,7 @@ def show_edit_page(pet_id):
     pet = Pet.query.get_or_404(pet_id)
     form = AddPetForm(obj=pet)
     species_options = [(pet.id, pet.species) for pet in Pet.query.all()]
+    species_options = [(1, 'dog'), (2, 'cat')]
     form.species.choices = species_options
     if form.validate_on_submit():
         pet.photo_url = form.photo_url.data
@@ -63,7 +65,8 @@ def show_edit_page(pet_id):
         pet.available = form.available.data
         db.session.add(pet)
         db.session.commit()
-        flash(f"Pet {pet.pet_name} updated!")
+        flash(f"Pet {pet.name} updated!")
         return redirect(f"/pets/{pet_id}/edit")
     else:
         return render_template("edit_pet.html", form=form)
+    # return render_template("edit_pet.html", form=form)

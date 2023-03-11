@@ -1,4 +1,4 @@
-{% extends 'home.html' %}
+{% extends 'base.html' %}
 {% block title %}Pet Info{% endblock %}
 {% block content %}
 
@@ -6,7 +6,11 @@
 <ul>
   <li>species: {{pet.species}}</li>
   {% if pet.age != None %}
-  <Li>Age: {{pet.age}}</Li>
+  <li>Age: {{pet.age}}</li>
+  {% endif %}
+  <li>Notes: {{pet.notes}}</li>
+  {% if pet.avaliable != False %}
+  <li>Avaliable</li>
   {% endif %}
 </ul>
 <img src="{{pet.photo_url}}" class="img-fluid">
